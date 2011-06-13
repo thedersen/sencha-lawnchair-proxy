@@ -1,14 +1,9 @@
 /**
- * @author Ed Spencer
- * @class Ext.data.WebStorageProxy
+ * @author Thomas Pedersen
+ * @class Ext.data.LawnchairProxy
  * @extends Ext.data.ClientProxy
  * 
  * 
- WebStorageProxy is simply a superclass for the {@link Ext.data.LocalStorageProxy localStorage} and 
- * {@link Ext.data.SessionStorageProxy sessionStorage} proxies. It uses the new HTML5 key/value client-side storage 
- * objects to save {@link Ext.data.Model model instances} for offline use.
- 
- 
  * 
  * @constructor
  * Creates the proxy, throws an error if local storage is not supported in the current browser
@@ -165,9 +160,7 @@ Ext.data.LawnchairProxy = Ext.extend(Ext.data.ClientProxy, {
 	//inherit docs
 	destroy: function(operation, callback, scope) {
 		var records = operation.records,
-			length = records.length,
-			that = this,
-			i;
+			that = this;
 		
 		this.batchDestroy(records, function(){
 			operation.setSuccessful();
