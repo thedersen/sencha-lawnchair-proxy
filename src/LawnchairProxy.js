@@ -9,18 +9,23 @@
  * Creates the proxy, throws an error if local storage is not supported in the current browser
  * @param {Object} config Optional config object
  */
-Ext.data.LawnchairProxy = Ext.extend(Ext.data.ClientProxy, {
+Ext.define('Ext.data.proxy.Lawnchair', {
+    extend: 'Ext.data.proxy.Client',
+    // requires: ['Lawnchair'],
+    alias: 'proxy.lawnchair',
 
 	/**
 	 * @cfg {String} id The unique ID used as the key in which all record data are stored in the local storage object
 	 */
-	id: undefined,
+    config: {
+      id: undefined
+    },
 
 	/**
 	 * @ignore
 	 */
 	constructor: function(config) {
-		Ext.data.LawnchairProxy.superclass.constructor.call(this, config);
+		Ext.data.proxy.Lawnchair.superclass.constructor.call(this, config);
 
 		/**
 		 * Cached map of records already retrieved by this Proxy - ensures that the same instance is always retrieved
@@ -34,9 +39,9 @@ Ext.data.LawnchairProxy = Ext.extend(Ext.data.ClientProxy, {
 		}
 
 		//if an id is not given, try to use the store's id instead
-		this.id = this.id || (this.store ? this.store.storeId : undefined);
+		this.config.id = this.config.id || (this.store ? this.store.storeId : undefined);
 
-		if (this.id == undefined) {
+		if (this.config.id == undefined) {
 			throw "No unique id was provided to the local storage proxy. See Ext.data.LocalStorageProxy documentation for details";
 		}
 	},
@@ -213,12 +218,10 @@ Ext.data.LawnchairProxy = Ext.extend(Ext.data.ClientProxy, {
 	getStorageObject: function() {
 		if (!this.lawnchair) {
 			this.lawnchair = new Lawnchair({
-				name: this.id
+				name: this.config.id
 			},
 			function() {});
 		}
 		return this.lawnchair;
 	}
 });
-
-Ext.data.ProxyMgr.registerType('lawnchair', Ext.data.LawnchairProxy);
